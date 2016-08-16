@@ -9,7 +9,7 @@ services:
             context: ./workspace
             args:
                 - INSTALL_MONGO=false
-                - INSTALL_XDEBUG=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_NODE=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - PUID=1000
@@ -21,6 +21,8 @@ services:
             # this will be appended to /etc/hosts
             # Note that this IP can perhaps be better injected via .env
             - "dockerhost:10.0.75.1"
+        ports:
+           - "22:22"
         tty: true
 
 ### PHP-FPM Container #######################################
@@ -30,7 +32,7 @@ services:
             context: ./php-fpm
             args:
                 - INSTALL_MONGO=false
-                - INSTALL_XDEBUG=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_ZIP_ARCHIVE=false
                 - INSTALL_MEMCACHED=false
             dockerfile: Dockerfile-70
