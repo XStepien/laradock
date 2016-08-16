@@ -150,20 +150,20 @@ RUN rm -f /etc/service/sshd/down
 # You need to create id_rsa_vm and id_rsa_vm.pub and save them in the
 # workspace directory
 #--------------------------------------------------------------------------
-ADD id_rsa_vm /tmp/id_rsa_vm
-ADD id_rsa_vm.pub /tmp/id_rsa_vm.pub
-RUN cat /tmp/id_rsa_vm.pub >> /root/.ssh/authorized_keys \
-    && cat /tmp/id_rsa_vm.pub >> /root/.ssh/id_rsa.pub \
-    && cat /tmp/id_rsa_vm.pub >> /root/.ssh/id_rsa_vm.pub \
-    && cat /tmp/id_rsa_vm >> /root/.ssh/id_rsa \
-    && cat /tmp/id_rsa_vm >> /root/.ssh/id_rsa_vm \
+ADD id_rsa_dk /tmp/id_rsa_dk
+ADD id_rsa_dk.pub /tmp/id_rsa_dk.pub
+RUN cat /tmp/id_rsa_dk.pub >> /root/.ssh/authorized_keys \
+    && cat /tmp/id_rsa_dk.pub >> /root/.ssh/id_rsa.pub \
+    && cat /tmp/id_rsa_dk.pub >> /root/.ssh/id_rsa_dk.pub \
+    && cat /tmp/id_rsa_dk >> /root/.ssh/id_rsa \
+    && cat /tmp/id_rsa_dk >> /root/.ssh/id_rsa_dk \
     && rm -f /tmp/id_rsa* \
     && chmod 644 \
         /root/.ssh/authorized_keys \
-        /root/.ssh/id_rsa_vm.pub \
+        /root/.ssh/id_rsa_dk.pub \
         /root/.ssh/id_rsa.pub \
     && chmod 400 \
-        /root/.ssh/id_rsa_vm \
+        /root/.ssh/id_rsa_dk \
         /root/.ssh/id_rsa
 
 
