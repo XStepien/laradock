@@ -9,7 +9,7 @@ services:
             context: ./workspace
             args:
                 - INSTALL_MONGO=false
-                - INSTALL_XDEBUG=true
+                - INSTALL_XDEBUG=false
                 - INSTALL_NODE=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - PUID=1000
@@ -21,6 +21,10 @@ services:
             # this will be appended to /etc/hosts
             # Note that this IP can perhaps be better injected via .env
             - "dockerhost:10.0.75.1"
+            - "sb:65.254.220.237"
+            - "dv:65.254.220.228"
+            - "qa:65.254.220.229"
+            - "pd:65.254.220.236"
         ports:
            - "22:22"
         tty: true
