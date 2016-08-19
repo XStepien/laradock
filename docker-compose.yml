@@ -2,6 +2,13 @@ version: '2'
 
 services:
 
+### Selenium Server Container ###########################
+    selenium:
+        image: selenium/standalone-firefox-debug
+        ports:
+            - 4444:4444
+            - 5900:5900
+
 ### Workspace Utilities Container ###########################
 
     workspace:
