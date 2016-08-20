@@ -1,0 +1,10 @@
+#! /bin/bash
+
+LARADOCK_DIR=/c/_dk/laravel/laradock
+
+cp ~/.aliases* $LARADOCK_DIR/workspace/.dotfiles
+cp ~/.bash_profile $LARADOCK_DIR/workspace/.dotfiles
+cp ~/.bashrc $LARADOCK_DIR/workspace/.dotfiles
+cp ~/.gitconfig $LARADOCK_DIR/workspace/.gitconfig
+
+ls -al $LARADOCK_DIR/workspace/.dotfiles

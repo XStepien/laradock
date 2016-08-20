@@ -1,0 +1,154 @@
+###############################################################
+## DOCKER
+###############################################################
+alias sad='s ~/.aliases_docker &'				# edit this file
+
+
+alias d=docker
+alias db='docker build'
+alias di='docker images'
+alias dr='winpty docker run --rm -i -t'
+alias dk=docker
+alias dl='docker logs -f'
+alias dp='docker ps'
+alias dpa='docker ps -a'
+alias dbsw='winpty docker run --rm -it --volumes-from sug-application sug-workspace bash'
+
+# Remove --force all containers
+alias drmf='docker rm -f $(docker ps -aq)'
+
+# Remove all volumns
+# Seriously?
+alias drmv='docker volume rm $(docker volume ls | awk "{print $2}")'
+alias dvls='docker volume ls'
+
+function dcbash()
+{
+	DCX_CONTAINER=$(docker-compose ps | grep "$1" | cut -d" " -f 1)
+	echo Bashing into: $DCX_CONTAINER
+	winpty docker exec -it ${DCX_CONTAINER} bash
+}
+
+function dcbw()
+{
+	DCX_CONTAINER=$(docker-compose ps | grep workspace | cut -d" " -f 1)
+	echo Bashing into: $DCX_CONTAINER
+	winpty docker exec -it ${DCX_CONTAINER} bash
+}
+
+# Another little bash function you can pop into your bash profile
+# Always docker exec into the latest container
+dbash() { winpty docker exec -i -t $(docker ps -l -q)  bash ;}
+
+
+
+# for use with cpo
+# must be in /c/_dk/pd
+alias dcpossh='winpty docker-compose exec -d php-fpm service ssh start'
+
+# docker ip
+# pass in container hash
+dip() {
+  # docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(docker ps -q)
+}
+
+
+# dclean() {
+# 	processes=`docker ps -q -f status=exited`
+# 	if [ -n "$processes" ]; then
+# 	  docker rm $processes
+# 	fi
+# 
+# 	images=`docker images -q -f dangling=true`
+# 	if [ -n "$images" ]; then
+# 	  docker rmi $images
+# 	fi
+# }
+
+# force remove images using grep
+# Example: dclean laradock
+dclean() { docker rmi -f $(docker images | grep $1 | awk '{print $3}'); }
+
+
+
+###############################################################
+## DOCKER COMPOSE
+###############################################################
+alias dc=docker-compose
+alias dcb='docker-compose build'
+alias dcl='docker-compose logs'
+alias dcp='docker-compose ps'
+
+# alias dcs='docker-compose stop; yes | docker-compose rm'
+alias dcs='docker-compose stop'
+
+alias dcssh='docker-compose exec -d php-fpm service ssh start'
+
+function dcudev()
+{
+	echo
+	cd dev
+	docker-compose up -d $1 $2
+	echo
+	docker ps 
+}
+
+## Docker launch bash with environment variables set
+function dt()
+{
+	echo
+	APPLICATION_CONTAINER_ID=docker_application_1
+	SELENIUM_BROWSERS_DEFAULT=local
+	SELENIUM_HOST_DEFAULT=sugqaecom.com
+	T=tests/stores/bannerhealthmedicalgroup/PageHomeTest.php
+
+	if [ ! -z "$1" ]; then SELENIUM_BROWSERS="$1"; else SELENIUM_BROWSERS="$SELENIUM_BROWSERS_DEFAULT"; fi
+	if [ ! -z "$1" ] && [ ! -z "$2" ]; then SELENIUM_HOST="$2"; else SELENIUM_HOST="$SELENIUM_HOST_DEFAULT"; fi
+
+	echo "mounting volume from $APPLICATION_CONTAINER_ID"
+	echo
+	winpty docker run --rm -ti \
+	-e SELENIUM_BROWSERS=$SELENIUM_BROWSERS \
+	-e SELENIUM_HOST=$SELENIUM_HOST \
+	-e T=$T \
+	--volumes-from $APPLICATION_CONTAINER_ID \
+	dev_workspace \
+	bash
+}
+
+## Docker launch bash with environment variables set
+function dvt()
+{
+	echo
+	APPLICATION_CONTAINER_ID=dev_application_1
+	SELENIUM_BROWSERS_DEFAULT=local
+	SELENIUM_HOST_DEFAULT=sugqaecom.com
+	T=tests/stores/bannerhealthmedicalgroup/PageHomeTest.php
+
+	if [ ! -z "$1" ]; then SELENIUM_BROWSERS="$1"; else SELENIUM_BROWSERS="$SELENIUM_BROWSERS_DEFAULT"; fi
+	if [ ! -z "$1" ] && [ ! -z "$2" ]; then SELENIUM_HOST="$2"; else SELENIUM_HOST="$SELENIUM_HOST_DEFAULT"; fi
+
+	echo "mounting volume from $APPLICATION_CONTAINER_ID"
+	echo
+	winpty docker run --rm -ti \
+	-e SELENIUM_BROWSERS=$SELENIUM_BROWSERS \
+	-e SELENIUM_HOST=$SELENIUM_HOST \
+	-e T="$T" \
+	--volumes-from $APPLICATION_CONTAINER_ID \
+	dev_workspace \
+	bash
+}
+
+function dcu()
+{
+	echo
+	docker-compose up -d $1 $2
+	echo
+	docker ps 
+}
+
+function dps()
+{
+	docker ps -q | xargs docker inspect --format '{{ .Id }} - {{ .Name }} - {{ .NetworkSettings.IPAddress }}'
+};

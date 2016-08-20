@@ -159,5 +159,12 @@ RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
     && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa
 
+
+
+COPY .dotfiles/* /root/
+
+
+
+
 # Set default work directory
 WORKDIR /var/www/laravel

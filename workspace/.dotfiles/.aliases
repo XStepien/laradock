@@ -1,0 +1,97 @@
+# SUBLIME
+alias s='/c/Program\ Files/Sublime\ Text\ 3/sublime_text.exe'
+
+alias b=bash
+alias ac='source ~/.bashrc'  
+alias se='s ~/.bashrc'				# edit this file
+alias sa='s ~/.aliases &'				# edit this file
+alias c=explorer
+alias shell=mintty
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+# -> Prevents accidentally clobbering files.
+alias mkdir='mkdir -p'
+
+alias l='ls -a'
+alias ll='ls -al'
+
+# list all files date descending
+alias lsd="ls -alrt"
+
+# recursively find most recently changed files
+alias lsdr="find $1 -type f -print0 | xargs -0 stat --format '%Y :%y %n' | sort -nr | cut -d: -f2- | head"
+alias h='history'
+alias j='jobs -l'
+alias which='type -a'
+alias ..='cd ..'
+
+# Pretty-print of some PATH variables:
+alias path='echo -e ${PATH//:/\\n}'
+alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+
+
+alias du='du -kh'    # Makes a more readable output.
+alias df='df -kTh'
+alias dutop='du -ah | sort -hr | head' # top biggest files
+
+###############################################################
+## JUMP TO DIRECTORY
+###############################################################
+alias jdk='cd /c/_dk'
+alias jld='cd /c/_dk/laravel/laradock'
+alias jllp='cd /c/_dk/laravel-laradock-phpstorm/laradock'
+alias jsd='cd /c/_dk/sd'
+alias jsu='cd /c/_dk/selenium-testing'
+alias jpd='cd /c/_dk/pd'
+alias jcpo='cd /c/_dk/cpo'
+
+
+###############################################################
+## MYSQL TUNNELS
+###############################################################
+alias sshsb='ssh root@65.254.220.237 -L localhost:3307:127.0.0.1:3306'
+alias sshdv='ssh root@65.254.220.228 -L localhost:3307:127.0.0.1:3306'
+alias sshqa='ssh root@65.254.220.229 -L localhost:3307:127.0.0.1:3306'
+alias sshpd='ssh root@65.254.220.236 -L localhost:3307:127.0.0.1:3306'
+
+###############################################################
+## GIT
+###############################################################
+alias g="git"
+alias gck="git checkout --"
+alias gdf="git diff"
+alias gst="echo 'git status'; git status"
+alias gbr="git status | head -1 | cut -f4 -d\ "
+alias gcm="echo 'git commit -a'; git commit -a"
+alias ga="echo 'git add'; git add"
+alias gb="echo 'git branch'; git branch"
+alias gba="echo 'git branch -a'; git branch -a"
+alias gc="echo 'git checkout'; git checkout"
+alias gca="echo 'git commit -a'; git commit -a"
+alias gcm="echo 'git commit -m'; git commit -m"
+alias gcv="echo 'git commit -v'; git commit -v"
+alias gd="echo 'git diff'; git diff"
+alias gl="echo 'git log'; git log"
+alias glo="echo 'git log --oneline'; git log --oneline"
+alias glgo="echo 'git log --graph --oneline'; git log --graph --oneline"
+alias gpl="echo 'git pull'; git pull"
+alias gpu="echo 'git push'; git push"
+alias gs="echo 'git status'; git status"
+alias gv="echo 'ssh -T -p 443 git@ssh.github.com'; ssh -T -p 443 git@ssh.github.com"
+
+function my_bfg() {
+	java -jar /c/Users/Larry/Dropbox/utils/bfg.jar *$
+}
+alias bfg="java -jar /c/Users/Larry/Dropbox/utils/bfg.jar $*"
+
+function    glt()
+{
+    echo 'Branch checked-out : '    `git rev-parse --abbrev-ref HEAD`;
+
+    revlist=`git rev-list --tags --max-count=1`
+
+    echo 'Last Tag (revision): '    `git describe --tags $revlist`
+    echo 'Checked-out version: '    `git describe`;
+};

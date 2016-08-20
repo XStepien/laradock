@@ -3,7 +3,7 @@ version: '2'
 services:
 
 ### Selenium Server Container ###########################
-    selenium:
+    sel:
 
         # image: selenium/standalone-firefox-debug
         # Rebuilt with different password

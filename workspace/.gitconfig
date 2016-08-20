@@ -1,0 +1,49 @@
+[user]
+	name = larryeitel
+	email = larry@eitel.com
+[push]
+	default = simple
+[color]
+	ui = auto
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	br = branch
+[core]
+	safecrlf = false
+    pager   =   "less -r"
+
+[diff]
+    external    =   git_diff_wrapper
+#   tool        =   vimdiff
+
+[pager]
+        diff    =
+[i18n]
+        commitencoding      =   ISO-8859-1
+        logoutputencoding   =   ISO-8859-1
+[alias]
+        co      =   checkout
+        br      =   branch
+        ci      =   commit
+        ca      =   commit -a
+        st      =   status
+        sub     =   submodule
+        subup   =   submodule update
+        subnew  =   submodule update --init
+        suck    =   submodule update --checkout
+        pack    =   push origin master --tags
+        unstage =   reset HEAD --
+        last    =   log -1 HEAD
+        visual  =   gitk
+        patch   =   diff --no-prefix --no-ext-diff
+
+		#   Note green color looks bad on mac
+		#
+        lgb     =   log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold red)%h%C(reset) - %C(bold blue)(%ar)%C(reset) %C(bold white)%s%C(reset) %C(bold yellow)%d%C(reset)' --all
+        lgbt    =   !git --no-pager log --graph --abbrev-commit --decorate --date=relative --format=tformat:'%C(bold red)%h%C(reset) - %C(bold blue)(%ar)%C(reset) %C(bold white)%s%C(reset) %C(bold yellow)%d%C(reset)' --all
+        plate   =   push -u platform master --tags
+
+[rebase]
+        autosquash = true
