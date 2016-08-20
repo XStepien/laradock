@@ -4,7 +4,11 @@ services:
 
 ### Selenium Server Container ###########################
     selenium:
-        image: selenium/standalone-firefox-debug
+
+        # image: selenium/standalone-firefox-debug
+        # Rebuilt with different password
+        # selenium-custom/README.md
+        image: larryeitel/standalone-firefox-debug
         ports:
             - 4444:4444
             - 5900:5900
