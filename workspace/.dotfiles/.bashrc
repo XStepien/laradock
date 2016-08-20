@@ -1,7 +1,3 @@
-export desktop="desktop path"
-export PATH=$PATH:/root/git-town/src
-export MANPATH=$MANPATH:/root/git-town/man
-
 source ~/.aliases
 source ~/.aliases_docker
 

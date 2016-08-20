@@ -159,11 +159,20 @@ RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
     && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa
 
-
-
 COPY .dotfiles/* /root/
 
 
+
+# Check if git-town need to be cloned and configured
+ARG INSTALL_GIT_TOWN=true
+ENV INSTALL_GIT_TOWN ${INSTALL_GIT_TOWN}
+RUN if [ ${INSTALL_GIT_TOWN} = true ]; then \
+    # run the install
+    # clone git-town and set environment
+    git clone https://github.com/Originate/git-town.git /root/git-town \
+    && echo 'export PATH=$PATH:/root/git-town/src' >> ~/.bashrc \
+    && echo 'export MANPATH=$MANPATH:/root/git-town/man' >> ~/.bashrc \
+;fi
 
 
 # Set default work directory

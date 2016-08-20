@@ -21,8 +21,9 @@ services:
             args:
                 - INSTALL_MONGO=false
                 - INSTALL_XDEBUG=true
-                - INSTALL_NODE=false
+                - INSTALL_NODE=true
                 - COMPOSER_GLOBAL_INSTALL=false
+                - INSTALL_GIT_TOWN=true
                 - PUID=1000
                 - PGID=1000
         volumes_from:
@@ -235,6 +236,7 @@ services:
     volumes_source:
         build: ./volumes/application
         volumes:
+            # - ./workspace/git-town:/root/git-town
             - ../:/var/www/laravel
             - ../../cpo/:/var/www/cpo
 
