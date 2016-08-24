@@ -152,11 +152,13 @@ RUN rm -f /etc/service/sshd/down
 #--------------------------------------------------------------------------
 ADD id_rsa_dk /tmp/id_rsa
 ADD id_rsa_dk.pub /tmp/id_rsa.pub
+ADD known_hosts /tmp/known_hosts
 RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
     && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
     && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
-    && rm -f /tmp/id_rsa* \
-    && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
+    && cat /tmp/known_hosts >> /root/.ssh/known_hosts \
+    && rm -f /tmp/id_rsa* /tmp/known_hosts \
+    && chmod 644 /root/.ssh/known_hosts /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa
 
 COPY .dotfiles/* /root/

@@ -1,5 +1,6 @@
 .idea
 **/id_rsa*
+**/known_hosts
 /logs
 /data
 .env

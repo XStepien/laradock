@@ -81,6 +81,13 @@ alias gpu="echo 'git push'; git push"
 alias gs="echo 'git status'; git status"
 alias gv="echo 'ssh -T -p 443 git@ssh.github.com'; ssh -T -p 443 git@ssh.github.com"
 
+
+###############################################################
+## PHP ARTISAN
+###############################################################
+alias art="php artisan"
+
+
 function my_bfg() {
 	java -jar /c/Users/Larry/Dropbox/utils/bfg.jar *$
 }
