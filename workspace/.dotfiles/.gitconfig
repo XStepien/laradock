@@ -11,8 +11,9 @@
 	co = checkout
 	br = branch
 [core]
-	safecrlf = false
+    safecrlf = true
     pager   =   "less -r"
+    autocrlf = input
 
 [diff]
     external    =   git_diff_wrapper
