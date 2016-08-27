@@ -37,6 +37,7 @@ MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 #   - INSTALL_MONGO=            false
 #   - COMPOSER_GLOBAL_INSTALL=  false
 #   - INSTALL_NODE=             false
+#   - INSTALL_DRUSH=            false
 #
 
 #####################################
@@ -53,7 +54,29 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/laravel/vendor/bin/phpunit'" >> ~/.bashrc \
 ;fi
 # ADD for REMOTE debugging
-COPY ./xdebug_settings_only.ini /etc/php/7.0/cli/conf.d/xdebug_settings_only.ini
+COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
+
+
+#####################################
+# ssh:
+#####################################
+
+# Check if ssh needs to be installed
+# See: https://github.com/phusion/baseimage-docker#enabling_ssh
+ADD insecure_id_rsa /tmp/id_rsa
+ADD insecure_id_rsa.pub /tmp/id_rsa.pub
+ARG INSTALL_WORKSPACE_SSH=true
+ENV INSTALL_WORKSPACE_SSH ${INSTALL_WORKSPACE_SSH}
+RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
+    rm -f /etc/service/sshd/down && \
+    cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
+        && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
+        && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
+        && rm -f /tmp/id_rsa* \
+        && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
+    && chmod 400 /root/.ssh/id_rsa \
+;fi
+
 
 #####################################
 # MongoDB:
@@ -96,6 +119,22 @@ RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
     # run the install
     composer global install \
 ;fi
+
+#####################################
+# Drush:
+#####################################
+USER root
+ENV DRUSH_VERSION 8.1.2
+ARG INSTALL_DRUSH=true
+ENV INSTALL_DRUSH ${INSTALL_DRUSH}
+RUN if [ ${INSTALL_DRUSH} = true ]; then \
+    # Install Drush 8 with the phar file.
+    curl -fsSL -o /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar | bash && \
+    chmod +x /usr/local/bin/drush && \
+    drush core-status \
+;fi
+
+USER laradock
 
 #####################################
 # Node / NVM:
