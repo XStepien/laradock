@@ -8,7 +8,7 @@ services:
         build:
             context: ./workspace
             args:
-                - INSTALL_XDEBUG=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_MONGO=false
                 - INSTALL_NODE=false
                 - INSTALL_DRUSH=false
@@ -29,7 +29,7 @@ services:
         build:
             context: ./php-fpm
             args:
-                - INSTALL_XDEBUG=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_MONGO=false
                 - INSTALL_ZIP_ARCHIVE=false
                 - INSTALL_MEMCACHED=false
@@ -235,6 +235,7 @@ services:
         build: ./volumes/application
         volumes:
             - ../:/var/www/laravel
+            - ../../nb/home:/var/www/nb/home
             # Demonstration of how to mount multiple sites
             # - ../../site_a/:/var/www/site_a
             # - ../../site_b/:/var/www/site_b
@@ -244,6 +245,8 @@ services:
     volumes_data:
         build: ./volumes/data
         volumes:
+            - ../../nb/sql:/var/www/nb/sql
+
             - ./data/mysql:/var/lib/mysql
             - ./data/postgres:/var/lib/postgres
             - ./data/memcached:/var/lib/memcached
