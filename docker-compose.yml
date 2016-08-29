@@ -21,6 +21,8 @@ services:
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
             - "dockerhost:10.0.75.1"
+        ports:
+            - "22:22"
         tty: true
 
 ### PHP-FPM Container #######################################
@@ -105,7 +107,7 @@ services:
             MYSQL_DATABASE: homestead
             MYSQL_USER: homestead
             MYSQL_PASSWORD: secret
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: bThere.oBsquare!
 
 ### PostgreSQL Container ####################################
 
@@ -235,7 +237,9 @@ services:
         build: ./volumes/application
         volumes:
             - ../:/var/www/laravel
-            - ../../nb/home:/var/www/nb/home
+            - ../../cpo:/var/www/cpo
+            - ../../nb:/var/www/nb
+            - ../../ne:/var/www/ne
             # Demonstration of how to mount multiple sites
             # - ../../site_a/:/var/www/site_a
             # - ../../site_b/:/var/www/site_b
