@@ -157,7 +157,8 @@ Assuming that you are in laradock folder.
 
 <a name="InstallPHPStorm"></a>
 ### PHPStorm
-PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program). Which means it is free of charge if you don't mind a few bumps in the road.
+PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program). Which means it is free of charge if you don't mind an occasional bump in the road. It's been rock-solid for me.
+
 - File/New Project
 ![New Project Dialog Box](photos/PHPStorm/NewProjectDialogBox.png)
 `dockerhost` was added to `etc/hosts` and points to `Docker Host IP`.
