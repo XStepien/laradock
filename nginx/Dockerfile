@@ -4,7 +4,7 @@ MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 ADD nginx.conf /etc/nginx/
 #COPY sites/*.conf /etc/nginx/sites-available/
-COPY includes/* /etc/nginx/
+#COPY includes/* /etc/nginx/
 
 ARG PHP_UPSTREAM=php-fpm
 
