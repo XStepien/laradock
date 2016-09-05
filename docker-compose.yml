@@ -22,6 +22,8 @@ services:
                 - INSTALL_MONGO=false
                 - INSTALL_XDEBUG=true
                 - INSTALL_NODE=false
+                - INSTALL_DRUSH=false
+                - INSTALL_AEROSPIKE_EXTENSION=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - INSTALL_WORKSPACE_SSH=true
                 - INSTALL_GIT_TOWN=false
@@ -52,6 +54,7 @@ services:
                 - INSTALL_ZIP_ARCHIVE=false
                 - INSTALL_MEMCACHED=false
                 - INSTALL_OPCACHE=false
+                - INSTALL_AEROSPIKE_EXTENSION=false
             dockerfile: Dockerfile-70
         volumes_from:
             - volumes_source
@@ -290,7 +293,7 @@ services:
 ### Laravel Application Code Container ######################
 
     volumes_source:
-        build: ./volumes/application
+        image: tianon/true
         volumes:
             - ../:/var/www/laravel
             - ../../nb:/var/www/nb
