@@ -26,7 +26,7 @@ services:
                 - INSTALL_AEROSPIKE_EXTENSION=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - INSTALL_WORKSPACE_SSH=true
-                - INSTALL_GIT_TOWN=false
+                - INSTALL_GIT_TOWN=true
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
@@ -40,7 +40,7 @@ services:
             - "qa:65.254.220.229"
             - "pd:65.254.220.236"
         ports:
-           - "22:22"
+           - "2200:22"
         tty: true
 
 ### PHP-FPM Container #######################################
@@ -299,6 +299,7 @@ services:
             - ../../nb:/var/www/nb
             - ../../ne:/var/www/ne
             - ../../lv53/:/var/www/lv53
+            - ../../nb/home/:/var/www/nb/home
             - ../../cpo/:/var/www/cpo
 
             # By default, site_a and site_b are mirroring the parent Laravel app.

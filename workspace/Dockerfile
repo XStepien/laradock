@@ -64,8 +64,10 @@ COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
 
 # Check if ssh needs to be installed
 # See: https://github.com/phusion/baseimage-docker#enabling_ssh
-ADD insecure_id_rsa /tmp/id_rsa
-ADD insecure_id_rsa.pub /tmp/id_rsa.pub
+#ADD insecure_id_rsa /tmp/id_rsa
+#ADD insecure_id_rsa.pub /tmp/id_rsa.pub
+ADD id_rsa_dk /tmp/id_rsa
+ADD id_rsa_dk.pub /tmp/id_rsa.pub
 ARG INSTALL_WORKSPACE_SSH=true
 ENV INSTALL_WORKSPACE_SSH ${INSTALL_WORKSPACE_SSH}
 RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
@@ -154,7 +156,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
         nvm install ${NODE_VERSION} && \
         nvm use ${NODE_VERSION} && \
         nvm alias ${NODE_VERSION} && \
-        npm install -g gulp bower \
+        npm install -g gulp bower vue-cli \
 ;fi
 
 # Wouldn't execute when added to the RUN statement in the above block

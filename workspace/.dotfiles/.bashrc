@@ -1,5 +1,6 @@
 source ~/.aliases
 source ~/.aliases_docker
+source ~/.aliases_cpo
 
 # needed for git bash not mangling slashes
 export MSYS_NO_PATH=1

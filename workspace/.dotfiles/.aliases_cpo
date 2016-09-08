@@ -1,0 +1,7 @@
+###############################################################
+## CPO
+###############################################################
+alias sac='s ~/.aliases_cpo &'				# edit this file
+
+# Run first: HOST_ALIAS_TO_TEST=pd
+alias cpoe2e='./bin/phpunit -c app/tests_selenium/phpunit.xml --testsuite'
