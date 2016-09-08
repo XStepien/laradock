@@ -26,7 +26,7 @@ services:
                 - INSTALL_AEROSPIKE_EXTENSION=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - INSTALL_WORKSPACE_SSH=true
-                - INSTALL_GIT_TOWN=true
+                - INSTALL_GIT_TOWN=false
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
@@ -34,7 +34,7 @@ services:
             - volumes_source
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:172.18.0.1"
             - "sb:65.254.220.237"
             - "dv:65.254.220.228"
             - "qa:65.254.220.229"
@@ -64,7 +64,7 @@ services:
             - workspace
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:172.18.0.1"
         environment:
             # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
             - PHP_IDE_CONFIG="serverName=laravel"
@@ -296,11 +296,11 @@ services:
         image: tianon/true
         volumes:
             - ../:/var/www/laravel
-            - ../../nb:/var/www/nb
+            # - ../../nb:/var/www/nb
             - ../../ne:/var/www/ne
-            - ../../lv53/:/var/www/lv53
-            - ../../nb/home/:/var/www/nb/home
-            - ../../cpo/:/var/www/cpo
+            # - ../../lv53/:/var/www/lv53
+            # - ../../nb/home/:/var/www/nb/home
+            # - ../../cpo/:/var/www/cpo
 
             # By default, site_a and site_b are mirroring the parent Laravel app.
             # Demonstration of how to mount multiple sites
