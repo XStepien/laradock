@@ -19,14 +19,14 @@ services:
         build:
             context: ./workspace
             args:
-                - INSTALL_XDEBUG=true
                 - INSTALL_MONGO=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_NODE=false
                 - INSTALL_DRUSH=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
                 - COMPOSER_GLOBAL_INSTALL=false
                 - INSTALL_WORKSPACE_SSH=true
-                - INSTALL_GIT_TOWN=true
+                - INSTALL_GIT_TOWN=false
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
@@ -34,13 +34,13 @@ services:
             - volumes_source
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:172.18.0.1"
             - "sb:65.254.220.237"
             - "dv:65.254.220.228"
             - "qa:65.254.220.229"
             - "pd:65.254.220.236"
         ports:
-           - "22:22"
+           - "2200:22"
         tty: true
 
 ### PHP-FPM Container #######################################
@@ -49,8 +49,8 @@ services:
         build:
             context: ./php-fpm
             args:
-                - INSTALL_XDEBUG=true
                 - INSTALL_MONGO=false
+                - INSTALL_XDEBUG=true
                 - INSTALL_ZIP_ARCHIVE=false
                 - INSTALL_MEMCACHED=false
                 - INSTALL_OPCACHE=false
@@ -64,7 +64,7 @@ services:
             - workspace
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:172.18.0.1"
         environment:
             # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
             - PHP_IDE_CONFIG="serverName=laravel"
@@ -80,6 +80,8 @@ services:
             - volumes_source
         volumes:
             - ./logs/nginx/:/var/log/nginx
+            - ./nginx/includes/:/etc/nginx/includes
+            - ./nginx/sites-available/:/etc/nginx/sites-available
         ports:
             - "80:80"
             - "443:443"
@@ -291,31 +293,23 @@ services:
         links:
             - postgres
 
-### ElasticSearch Container ##################################
-
-    elasticsearch:
-        build: ./elasticsearch
-        volumes_from:
-            - volumes_data
-        ports:
-            - "9200:9200"
-            - "9300:9300"
-        links:
-            - php-fpm
-
 ### Laravel Application Code Container ######################
 
     volumes_source:
         image: tianon/true
         volumes:
             - ../:/var/www/laravel
-            - ../../lv53/:/var/www/lv53
-            - ../../nb/home/:/var/www/nb/home
-            - ../../cpo/:/var/www/cpo
+            # - ../../nb:/var/www/nb
+            - ../../ne:/var/www/ne
+            # - ../../lv53/:/var/www/lv53
+            # - ../../nb/home/:/var/www/nb/home
+            # - ../../cpo/:/var/www/cpo
 
+            # By default, site_a and site_b are mirroring the parent Laravel app.
             # Demonstration of how to mount multiple sites
-            # - ../../site_a/:/var/www/site_a
-            # - ../../site_b/:/var/www/site_b
+            # - ../:/var/www/site_a
+            # - ../:/var/www/site_b
+
 
 ### Databases Data Container ################################
 
@@ -330,6 +324,5 @@ services:
             - ./data/mongo:/data/db
             - ./data/aerospike:/opt/aerospike/data
             - ./data/sessions:/sessions
-            - ./data/elasticsearch/data:/usr/share/elasticsearch/data
 
 ### Add more Containers below ###############################
