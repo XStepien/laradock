@@ -303,7 +303,7 @@ services:
             - ../../ne:/var/www/ne
             # - ../../lv53/:/var/www/lv53
             # - ../../nb/home/:/var/www/nb/home
-            # - ../../cpo/:/var/www/cpo
+            - ../../cpo/:/var/www/cpo
 
             # By default, site_a and site_b are mirroring the parent Laravel app.
             # Demonstration of how to mount multiple sites
