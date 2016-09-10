@@ -117,7 +117,10 @@ services:
 ### MySQL Container #########################################
 
     mysql:
-        build: ./mysql
+        build:
+            context: ./mysql
+            args:
+                - MAX_ALLOWED_PACKET=20M
         volumes_from:
             - volumes_data
         ports:
