@@ -3,7 +3,7 @@ FROM nginx:alpine
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
 ADD nginx.conf /etc/nginx/
-COPY sites/*.conf /etc/nginx/sites-available/
+COPY sites-available/*.conf /etc/nginx/sites-available/
 COPY includes/* /etc/nginx/includes/
 
 ARG PHP_UPSTREAM=php-fpm
