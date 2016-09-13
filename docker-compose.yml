@@ -24,9 +24,10 @@ services:
                 - INSTALL_NODE=true
                 - INSTALL_DRUSH=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
-                - COMPOSER_GLOBAL_INSTALL=false
+                - COMPOSER_GLOBAL_INSTALL=true
                 - INSTALL_WORKSPACE_SSH=true
                 - INSTALL_GIT_TOWN=false
+                - INSTALL_LARAVEL_SPARK=true
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
@@ -298,6 +299,7 @@ services:
             - ../:/var/www/laravel
             # - ../../nb:/var/www/nb
             - ../../ne:/var/www/ne
+            - ../../home:/var/www/home
             # - ../../lv53/:/var/www/lv53
             # - ../../nb/home/:/var/www/nb/home
             - ../../cpo/:/var/www/cpo

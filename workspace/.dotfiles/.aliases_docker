@@ -14,6 +14,9 @@ alias dp='docker ps'
 alias dpa='docker ps -a'
 alias dbsw='winpty docker run --rm -it --volumes-from sug-application sug-workspace bash'
 
+## DOCKER MACHINE
+alias dm=docker-machine
+
 # Remove --force all containers
 alias drmf='docker rm -f $(docker ps -aq)'
 
@@ -29,9 +32,37 @@ function dcbash()
 	winpty docker exec -it ${DCX_CONTAINER} bash
 }
 
+function dcbdb()
+{
+	DCX_CONTAINER=$(docker-compose ps | grep mysql | cut -d" " -f 1)
+	echo Bashing into: $DCX_CONTAINER
+	winpty docker exec -it ${DCX_CONTAINER} bash
+}
+
+# restart nginx
+function dnginxrestart()
+{
+	DCX_CONTAINER=$(docker-compose ps | grep nginx | cut -d" " -f 1)
+	echo Restarting: $DCX_CONTAINER
+	# docker stop ${DCX_CONTAINER}
+	# docker start ${DCX_CONTAINER}
+	docker restart ${DCX_CONTAINER}
+	docker logs ${DCX_CONTAINER}
+}
+alias drx=dnginxrestart
+
+
 function dcbw()
 {
 	DCX_CONTAINER=$(docker-compose ps | grep workspace | cut -d" " -f 1)
+	echo Bashing into: $DCX_CONTAINER
+	winpty docker exec -it ${DCX_CONTAINER} bash
+}
+
+# mysql
+function dcbd()
+{
+	DCX_CONTAINER=$(docker-compose ps | grep mysql | cut -d" " -f 1)
 	echo Bashing into: $DCX_CONTAINER
 	winpty docker exec -it ${DCX_CONTAINER} bash
 }
@@ -40,7 +71,26 @@ function dcbw()
 # Always docker exec into the latest container
 dbash() { winpty docker exec -i -t $(docker ps -l -q)  bash ;}
 
+# remove laravel* containers
+# remove laravel_* images
+dcleanlaradockfunction()
+{
+	echo 'Removing ALL containers associated with laradock'
+	docker ps -a | awk '{ print $1,$2 }' | grep laradock | awk '{print $1}' | xargs -I {} docker rm {}
 
+	# remove ALL images associated with laradock_
+	# does NOT delete laradock/* which are hub images
+	echo 'Removing ALL images associated with laradock_'
+	docker images | awk '{print $1,$2,$3}' | grep laradock_ | awk '{print $3}' | xargs -I {} docker rmi {}
+
+	echo 'Listing all laradock docker hub images...'
+	docker images | grep laradock
+
+	echo 'dcleanlaradock completed'
+}
+# associate the above function with an alias
+# so can recall/lookup by typing 'alias'
+alias dcleanlaradock=dcleanlaradockfunction
 
 # for use with cpo
 # must be in /c/_dk/pd
@@ -54,21 +104,21 @@ dip() {
 }
 
 
-# dclean() {
-# 	processes=`docker ps -q -f status=exited`
-# 	if [ -n "$processes" ]; then
-# 	  docker rm $processes
-# 	fi
-# 
-# 	images=`docker images -q -f dangling=true`
-# 	if [ -n "$images" ]; then
-# 	  docker rmi $images
-# 	fi
-# }
+dclean() {
+	processes=`docker ps -q -f status=exited`
+	if [ -n "$processes" ]; then
+	  docker rm $processes
+	fi
+
+	images=`docker images -q -f dangling=true`
+	if [ -n "$images" ]; then
+	  docker rmi $images
+	fi
+}
 
 # force remove images using grep
 # Example: dclean laradock
-dclean() { docker rmi -f $(docker images | grep $1 | awk '{print $3}'); }
+# dclean() { docker rmi -f $(docker images | grep $1 | awk '{print $3}'); }
 
 
 
@@ -144,6 +194,16 @@ function dcu()
 {
 	echo
 	docker-compose up -d $1 $2
+	echo
+	docker ps 
+}
+
+# docker-compose up -d mysql nginx
+# for laradock - ld for short
+function dculd()
+{
+	echo
+	docker-compose up -d mysql nginx
 	echo
 	docker ps 
 }

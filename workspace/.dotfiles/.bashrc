@@ -1,10 +1,15 @@
+export desktop="desktop path"
+export PATH=$PATH:/root/git-town/src
+export MANPATH=$MANPATH:/root/git-town/man
+
 source ~/.aliases
 source ~/.aliases_docker
-source ~/.aliases_cpo
 
 # needed for git bash not mangling slashes
 export MSYS_NO_PATH=1
 
+# set PATH so it includes user's private bin directories
+PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 #-------------------------------------------------------------
 # File & strings related functions:

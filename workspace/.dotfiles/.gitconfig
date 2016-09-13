@@ -15,7 +15,6 @@
     pager   =   "less -r"
     autocrlf = input
     # May need to run: find ./ -type f -exec dos2unix {} \;
-	autocrlf = input
 
 [diff]
     external    =   git_diff_wrapper

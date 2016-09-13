@@ -40,8 +40,10 @@ alias dutop='du -ah | sort -hr | head' # top biggest files
 ## JUMP TO DIRECTORY
 ###############################################################
 alias jdk='cd /c/_dk'
+alias jdo='cd /c/_dk/do'
 alias jld='cd /c/_dk/laravel/laradock'
 alias jllp='cd /c/_dk/laravel-laradock-phpstorm/laradock'
+alias jne='cd /c/_dk/ne'
 alias jsd='cd /c/_dk/sd'
 alias jsu='cd /c/_dk/selenium-testing'
 alias jpd='cd /c/_dk/pd'
@@ -83,9 +85,23 @@ alias gv="echo 'ssh -T -p 443 git@ssh.github.com'; ssh -T -p 443 git@ssh.github.
 
 
 ###############################################################
+## CPO
+###############################################################
+alias=cpoe2e='./bin/phpunit -c app/tests_selenium/phpunit.xml --testsuite'
+
+## CPO TAILS
+###############################################################
+alias tailCpoE2Edv="tail -f -n50 /c/_dk/cpo/public/weblog/_e2e_dv.log"
+alias tailCpoE2Epd="tail -f -n50 /c/_dk/cpo/public/weblog/_e2e_pd.log"
+alias tailCpoE2Eqa="tail -f -n50 /c/_dk/cpo/public/weblog/_e2e_qa.log"
+alias tailCpoE2Esb="tail -f -n50 /c/_dk/cpo/public/weblog/_e2e_sb.log"
+
+
+###############################################################
 ## PHP ARTISAN
 ###############################################################
 alias art="php artisan"
+
 
 
 function my_bfg() {
