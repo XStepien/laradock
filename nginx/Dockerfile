@@ -1,24 +1,9 @@
-FROM nginx:alpine
+FROM larryeitel/dk_nginx:0.1
 
-MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+MAINTAINER Larry Eitel <larry@eitel.com>
 
 ADD nginx.conf /etc/nginx/
 COPY sites-available/*.conf /etc/nginx/sites-available/
 COPY includes/* /etc/nginx/includes/
 
 ARG PHP_UPSTREAM=php-fpm
-
- RUN adduser -D -H -u 1000 -s /bin/bash www-data \
-     && rm /etc/nginx/conf.d/default.conf \
-     && echo "upstream php-upstream { server ${PHP_UPSTREAM}:9000; }" > /etc/nginx/conf.d/upstream.conf
-
-#RUN apk update \
-#    && apk upgrade \
-#    && apk add --no-cache bash \
-#    && adduser -D -H -u 1000 -s /bin/bash www-data \
-#    && rm /etc/nginx/conf.d/default.conf \
-#    && echo "upstream php-upstream { server ${PHP_UPSTREAM}:9000; }" > /etc/nginx/conf.d/upstream.conf
-
-CMD ["nginx"]
-
-EXPOSE 80 443
