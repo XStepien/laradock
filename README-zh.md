@@ -219,7 +219,7 @@ docker-compose up -d  nginx mysql
 `nginx`, `hhvm`, `php-fpm`, `mysql`, `redis`, `postgres`, `mariadb`, `neo4j`, `mongo`, `apache2`, `caddy`, `memcached`, `beanstalkd`, `beanstalkd-console`, `workspace`.
 
 
-**说明**: `workspace` 和 `php-fpm` 将运行在大部分实例中, 所有不用在命令中 `up`加上它们.
+**说明**: `workspace` 和 `php-fpm` 将运行在大部分实例中, 所以不需要在 `up` 命令中加上它们.
 
 
 
@@ -956,21 +956,6 @@ Docker或Laravel的特别帮助，你可以在[Codementor.io](https://www.codeme
 **创始人:**
 
 - [Mahmoud Zalt](https://github.com/Mahmoudz)  (Twitter [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt))
-
-**主要 贡献者:**
-
-- [Zhqagp](https://github.com/zhqagp)
-- [Suteepat (tianissimo)](https://github.com/tianissimo)
-- [David (davidavz)](https://github.com/davidavz)
-- [Lialosiu](https://github.com/lialosiu)
-- [Eric Pfeiffer (computerfr33k)](https://github.com/computerfr33k)
-- [Orette](https://github.com/orette)
-- [Jack Fletcher (Kauhat)](https://github.com/Kauhat)
-- [Bo-Yi Wu (appleboy)](https://github.com/appleboy)
-- [Amin Mkh (AminMkh)](https://github.com/AminMkh)
-- [Matthew Tonkin Dunn (mattythebatty)](https://github.com/mattythebatty)
-- [Zhivitsa Kirill (zhikiri)](https://github.com/zhikiri)
-- [Benmag](https://github.com/benmag)
 
 **优秀的人:**
 

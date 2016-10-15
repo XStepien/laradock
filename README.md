@@ -23,7 +23,7 @@ It's like Laravel Homestead but for Docker instead of Vagrant.
 	- [Chinese](https://github.com/LaraDock/laradock/blob/master/README-zh.md)
 - [Intro](#Intro)
 	- [Features](#features)
-	- [Supported Software's](#Supported-Containers)
+	- [Supported Software](#Supported-Containers)
 	- [What is Docker](#what-is-docker)
 	- [What is Laravel](#what-is-laravel)
 	- [Why Docker not Vagrant](#why-docker-not-vagrant)
@@ -41,7 +41,7 @@ It's like Laravel Homestead but for Docker instead of Vagrant.
 		- [Edit default container configuration](#Edit-Container)
 		- [Edit a Docker Image](#Edit-a-Docker-Image)
 		- [Build/Re-build Containers](#Build-Re-build-Containers)
-		- [Add more Software's (Docker Images)](#Add-Docker-Images)
+		- [Add more Software (Docker Images)](#Add-Docker-Images)
 		- [View the Log files](#View-the-Log-files)
 	- [Laravel](#Laravel):
 		- [Install Laravel from a Docker Container](#Install-Laravel)
@@ -49,6 +49,8 @@ It's like Laravel Homestead but for Docker instead of Vagrant.
 		- [Use Redis](#Use-Redis)
 		- [Use Mongo](#Use-Mongo)
 		- [Use phpMyAdmin](#Use-phpMyAdmin)
+		- [Use pgAdmin](#Use-pgAdmin)
+		- [Use ElasticSearch](#Use-ElasticSearch)
 	- [PHP](#PHP)
 		- [Install PHP Extensions](#Install-PHP-Extensions)
 		- [Change the PHP-FPM Version](#Change-the-PHP-FPM-Version)
@@ -56,12 +58,17 @@ It's like Laravel Homestead but for Docker instead of Vagrant.
 		- [Install xDebug](#Install-xDebug)
 		    - [Start/Stop xDebug](#Controll-xDebug)
 	- [Production](#Production)
+		- [Prepare LaraDock for Production](#LaraDock-for-Production)
 		- [Setup Laravel and Docker on Digital Ocean](#Digital-Ocean)
 	- [Misc](#Misc)
+		- [Change the timezone](#Change-the-timezone)
+		- [Cron jobs](#CronJobs)
+		- [MySQL access from host](#MySQL-access-from-host)
 		- [Use custom Domain](#Use-custom-Domain)
 		- [Enable Global Composer Build Install](#Enable-Global-Composer-Build-Install)
 		- [Install Prestissimo](#Install-Prestissimo)
 		- [Install Node + NVM](#Install-Node)
+		- [Install Node + YARN](#Install-Yarn)
 		- [Debugging](#debugging)
 		- [Upgrading LaraDock](#upgrading-laradock)
 - [Help & Questions](#Help)
@@ -95,7 +102,7 @@ Let's see how easy it is to install `NGINX`, `PHP`, `Composer`, `MySQL` and `Red
 
 - Easy switch between PHP versions: 7.0, 5.6, 5.5...
 - Choose your favorite database engine: MySQL, Postgres, MariaDB...
-- Run your own combination of software's: Memcached, HHVM, Beanstalkd...
+- Run your own combination of software: Memcached, HHVM, Beanstalkd...
 - Every software runs on a separate container: PHP-FPM, NGINX, PHP-CLI...
 - Easy to customize any container, with simple edit to the `dockerfile`.
 - All Images extends from an official base Image. (Trusted base Images).
@@ -109,7 +116,7 @@ Let's see how easy it is to install `NGINX`, `PHP`, `Composer`, `MySQL` and `Red
 
 
 <a name="Supported-Containers"></a>
-### Supported Software's (Containers)
+### Supported Software (Containers)
 
 - **Database Engines:**
 	- MySQL
@@ -133,7 +140,9 @@ Let's see how easy it is to install `NGINX`, `PHP`, `Composer`, `MySQL` and `Red
 	- RabbitMQ (+ RabbitMQ Console)
 - **Tools:**
 	- Workspace (PHP7-CLI, Composer, Git, Node, Gulp, SQLite, Vim, Nano, cURL...)
-	- phpMyAdmin
+	- PhpMyAdmin
+	- PgAdmin
+	- ElasticSearch
 
 
 >If you can't find your Software, build it yourself and add it to this list. Contributions are welcomed :)
@@ -185,8 +194,8 @@ Running a virtual Container is much faster than running a full virtual Machine. 
 
 What's better than a **Demo Video**:
 
-- LaraDock v4.0 (Coming soon..)
-- LaraDock [v2.2](https://www.youtube.com/watch?v=-DamFMczwDA)
+- LaraDock [v4.*](https://www.youtube.com/watch?v=TQii1jDa96Y)
+- LaraDock [v2.*](https://www.youtube.com/watch?v=-DamFMczwDA)
 - LaraDock [v0.3](https://www.youtube.com/watch?v=jGkyO6Is_aI)
 - LaraDock [v0.1](https://www.youtube.com/watch?v=3YQsHe6oF80)
 
@@ -204,7 +213,7 @@ What's better than a **Demo Video**:
 ## Installation
 
 
-1 - Clone the `LaraDock` repository:
+Clone the `LaraDock` repository:
 
 **A)** If you already have a Laravel project, clone this repository on your `Laravel` root directory:
 
@@ -213,13 +222,32 @@ git submodule add https://github.com/LaraDock/laradock.git
 ```
 >If you are not already using Git for your Laravel project, you can use `git clone` instead of `git submodule`.
 
+Note: In this case the folder structure will be like this (recommended):
+
+```
+- project1
+	- laradock
+- project2
+	- laradock
+```
+
+<br>
+
 **B)** If you don't have a Laravel project, and you want to install Laravel from Docker, clone this repo anywhere on your machine:
 
 ```bash
 git clone https://github.com/LaraDock/laradock.git
 ```
+Note: In this case the folder structure will be like this:
 
+```
+- projects
+	- laradock
+	- project1
+	- project2
+```
 
+**Note:** if you are using this folder structure don't forget to edit the `docker-compose.yml` file to map to your Laravel directory once you have it (example: `- ../project1/:/var/www/laravel`). "You will need to stop and re-run your docker-compose command for the changes to take place".
 
 <a name="Usage"></a>
 ## Usage
@@ -232,13 +260,12 @@ If you are using **Docker Toolbox** (VM), do one of the following:
 - Upgrade to Docker [Native](https://www.docker.com/products/docker) for Mac/Windows (Recommended). Check out [Upgrading Laradock](#upgrading-laradock)
 - Use LaraDock v3.* (Visit the `LaraDock-ToolBox` [Branch](https://github.com/LaraDock/laradock/tree/LaraDock-ToolBox)).
 
+<br>
 
-If you are using **Docker Native** (For Mac/Windows) or even for Linux, continue this documentation normally since LaraDock v4 and above is just for that.
-
-
+>**Warning:** If you used an older version of LaraDock it's highly recommended to rebuild the containers you need to use [see how you rebuild a container](#Build-Re-build-Containers) in order to prevent errors as much as possible.
 
 <br>
-<br>
+
 1 - Run Containers: *(Make sure you are in the `laradock` folder before running the `docker-compose` commands).*
 
 
@@ -249,12 +276,13 @@ If you are using **Docker Native** (For Mac/Windows) or even for Linux, continue
 docker-compose up -d  nginx mysql
 ```
 
+**Note**: The `workspace` and `php-fpm` will run automatically in most of the cases, so no need to specify them in the `up` command. If you couldn't find them running then you need specify them as follow: `docker-compose up -d nginx php-fpm mysql workspace`.
+
+
 You can select your own combination of Containers form the list below:
 
-`nginx`, `hhvm`, `php-fpm`, `mysql`, `redis`, `postgres`, `mariadb`, `neo4j`, `mongo`, `apache2`, `caddy`, `memcached`, `beanstalkd`, `beanstalkd-console`, `rabbitmq`, `workspace`, `phpmyadmin`, `aerospike`.
+`nginx`, `hhvm`, `php-fpm`, `mysql`, `redis`, `postgres`, `mariadb`, `neo4j`, `mongo`, `apache2`, `caddy`, `memcached`, `beanstalkd`, `beanstalkd-console`, `rabbitmq`, `workspace`, `phpmyadmin`, `aerospike`, `pgadmin`, `elasticsearch`.
 
-
-**Note**: `workspace` and `php-fpm` will run automatically in most of the cases, so no need to specify them in the `up` command.
 
 
 
@@ -264,8 +292,13 @@ You can select your own combination of Containers form the list below:
 ```bash
 docker-compose exec workspace bash
 ```
-<br />
-Add `--user=laradock` (example `docker-compose exec --user=laradock workspace bash`) to have files created as your host's user. (you can change the PUID (User id) and PGID (group id) variables from the `docker-compose.yml`).
+Alternatively, for Windows Powershell users: execute the following command to enter any running container:
+
+```bash
+docker exec -it {workspace-container-id} bash
+```
+
+**Note:** You can add `--user=laradock` (example `docker-compose exec --user=laradock workspace bash`) to have files created as your host's user. (you can change the PUID (User id) and PGID (group id) variables from the `docker-compose.yml`).
 
 
 
@@ -389,15 +422,17 @@ Examples:
 Change MySQL Database Name:
 
 ```yml
-  environment:
-    MYSQL_DATABASE: laradock
+    environment:
+        MYSQL_DATABASE: laradock
+    ...
 ```
 
 Change Redis defaut port to 1111:
 
 ```yml
-  ports:
-    - "1111:6379"
+    ports:
+        - "1111:6379"
+    ...
 ```
 
 
@@ -454,7 +489,7 @@ You might use the `--no-cache` option if you want full rebuilding (`docker-compo
 
 <br>
 <a name="Add-Docker-Images"></a>
-### Add more Software's (Docker Images)
+### Add more Software (Docker Images)
 
 To add an image (software), just edit the `docker-compose.yml` and add your container details, to do so you need to be familiar with the [docker compose file syntax](https://docs.docker.com/compose/compose-file/).
 
@@ -516,6 +551,7 @@ Since the new Laravel application is in the `my-cool-app` folder, we need to rep
         build: ./application
         volumes:
             - ../my-cool-app/:/var/www/laravel
+    ...
 ```
 4 - Go to that folder and start working..
 
@@ -726,7 +762,30 @@ docker-compose up -d mariadb phpmyadmin
 2 - Open your browser and visit the localhost on port **8080**:  `http://localhost:8080`
 
 
+<br>
+<a name="Use-pgAdmin"></a>
+### Use pgAdmin
 
+1 - Run the pgAdmin Container (`pgadmin`) with the `docker-compose up` command. Example:
+
+```bash
+docker-compose up -d postgres pgadmin
+```
+
+2 - Open your browser and visit the localhost on port **5050**:  `http://localhost:5050`
+
+
+<br>
+<a name="Use-ElasticSearch"></a>
+### Use ElasticSearch
+
+1 - Run the ElasticSearch Container (`elasticsearch`) with the `docker-compose up` command. Example:
+
+```bash
+docker-compose up -d elasticsearch
+```
+
+2 - Open your browser and visit the localhost on port **9200**:  `http://localhost:9200`
 
 
 <br>
@@ -769,11 +828,12 @@ By default **PHP-FPM 7.0** is running.
 
 3 - Change the version number, by replacing `Dockerfile-70` with `Dockerfile-56`, like this:
 
-```txt
-php-fpm:
-    build:
-        context: ./php-fpm
-        dockerfile: Dockerfile-70
+```yml
+    php-fpm:
+        build:
+            context: ./php-fpm
+            dockerfile: Dockerfile-70
+    ...
 ```
 
 4 - Finally rebuild the container
@@ -861,6 +921,13 @@ It should be like this:
 
 2 - Re-build the containers `docker-compose build workspace php-fpm`
 
+3 - Open `laradock/workspace/xdebug.ini` and/or `laradock/php-fpm/xdebug.ini` and enable at least the following configs:
+
+```
+xdebug.remote_autostart=1
+xdebug.remote_enable=1
+xdebug.remote_connect_back=1
+```
 
 For information on how to configure xDebug with your IDE and work it out, check this [Repository](https://github.com/LarryEitel/laravel-laradock-phpstorm).
 
@@ -888,10 +955,30 @@ To controll the behavior of xDebug (in the `php-fpm` Container), you can run the
 
 
 <br>
+<a name="LaraDock-for-Production"></a>
+### Prepare LaraDock for Production
+
+It's recommended for production to create a custom `docker-compose.yml` file. For that reason LaraDock is shipped with `production-docker-compose.yml` which should contain only the containers you are planning to run on production (usage exampe: `docker-compose -f production-docker-compose.yml up -d nginx mysql redis ...`). 
+
+Note: The Database (MySQL/MariaDB/...) ports should not be forwarded on production, because Docker will automatically publish the port on the host, which is quite insecure, unless specifically told not to. So make sure to remove these lines:
+
+```
+ports:
+    - "3306:3306"
+```
+
+To learn more about how Docker publishes ports, please read [this excellent post on the subject](https://fralef.me/docker-and-iptables.html).
+
+
+
+
+
+
+<br>
 <a name="Digital-Ocean"></a>
 ### Setup Laravel and Docker on Digital Ocean
 
-####[Full Giude Here](https://github.com/LaraDock/laradock/blob/master/_guides/digital_ocean.md)
+####[Full Guide Here](https://github.com/LaraDock/laradock/blob/master/_guides/digital_ocean.md)
 
 
 
@@ -903,6 +990,49 @@ To controll the behavior of xDebug (in the `php-fpm` Container), you can run the
 
 
 <br>
+
+<a name="Change-the-timezone"></a>
+### Change the timezone
+
+To change the timezone for the `workspace` container, modify the `TZ` build argument in the Docker Compose file to one in the [TZ database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+
+For example, if I want the timezone to be `New York`:
+
+```yml
+    workspace:
+        build:
+            context: ./workspace
+            args:
+                - TZ=America/New_York
+    ...
+```
+
+We also recommend [setting the timezone in Laravel](http://www.camroncade.com/managing-timezones-with-laravel/).
+
+<a name="CronJobs"></a>
+### Adding cron jobs
+
+You can add your cron jobs to `workspace/crontab/root` after the `php artisan` line.
+
+```
+* * * * * php /var/www/laravel/artisan schedule:run >> /dev/null 2>&1
+
+# Custom cron
+* * * * * root echo "Every Minute" > /var/log/cron.log 2>&1
+```
+
+Make sure you [change the timezone](#Change-the-timezone) if you don't want to use the default (UTC).
+
+<a name="MySQL-access-from-host"></a>
+### MySQL access from host
+
+You can forward the MySQL/MariaDB port to your host by making sure these lines are added to the `mysql` or `mariadb` section of the `docker-compose.yml` or in your [environment specific Compose](https://docs.docker.com/compose/extends/) file.
+
+```
+ports:
+    - "3306:3306"
+```
+
 <a name="Use-custom-Domain"></a>
 ### Use custom Domain (instead of the Docker IP)
 
@@ -991,6 +1121,30 @@ It should be like this:
             context: ./workspace
             args:
                 - INSTALL_NODE=true
+    ...
+```
+
+3 - Re-build the container `docker-compose build workspace`
+
+<br>
+<a name="Install-Yarn"></a>
+### Install Node + YARN
+
+Yarn is a new package manager for JavaScript. It is so faster than npm, which you can find [here](http://yarnpkg.com/en/compare).To install NodeJS and [Yarn](https://yarnpkg.com/) in the Workspace container:
+
+1 - Open the `docker-compose.yml` file
+
+2 - Search for the `INSTALL_NODE` and `INSTALL_YARN` argument under the Workspace Container and set it to `true`
+
+It should be like this:
+
+```yml
+    workspace:
+        build:
+            context: ./workspace
+            args:
+                - INSTALL_NODE=true
+                - INSTALL_YARN=true
     ...
 ```
 
@@ -1100,6 +1254,9 @@ This little project was built by one man who has a full time job and many respon
 
 #### Read the [Contribution Guidelines](https://github.com/LaraDock/laradock/blob/master/CONTRIBUTING.md).
 
+
+
+
 <a name="Help"></a>
 ## Help & Questions
 
@@ -1109,35 +1266,43 @@ You can as well can open an [issue](https://github.com/laradock/laradock/issues)
 
 For special help with Docker and/or Laravel, you can schedule a live call with the creator of this project at [Codementor.io](https://www.codementor.io/mahmoudz).
 
+
+
+
 ## Credits
 
 **Creator:**
 
-- [Mahmoud Zalt](https://github.com/Mahmoudz)  (Twitter [@Mahmoud_Zalt](https://twitter.com/Mahmoud_Zalt))
+- [Mahmoud Zalt](https://github.com/Mahmoudz)  [ [Twitter](https://twitter.com/Mahmoud_Zalt) | [Personal Site](http://zalt.me) | [Linkedin](https://www.linkedin.com/in/mahmoudzalt) ]
+
+**Admins:**
+
+- [Bo-Yi Wu](https://github.com/appleboy) (appleboy)
+- [Philippe Trépanier](https://github.com/philtrep) (philtrep)
 
 **Main Contributors:**
 
+- [Francis Lavoie](https://github.com/francislavoie) (francislavoie)
+- [luciano-jr](https://github.com/luciano-jr)
 - [Zhqagp](https://github.com/zhqagp)
-- [Tim B (tjb328)](https://github.com/tjb328)
+- [Tim B.](https://github.com/tjb328) (tjb328)
 - [MidasCodeBreaker](https://github.com/midascodebreaker)
-- [Larry Eitel (LarryEitel)](https://github.com/LarryEitel)
-- [Suteepat (tianissimo)](https://github.com/tianissimo)
-- [David (davidavz)](https://github.com/davidavz)
+- [Larry Eitel](https://github.com/LarryEitel)
+- [Suteepat](https://github.com/tianissimo) (tianissimo)
+- [David](https://github.com/davidavz) (davidavz)
 - [Lialosiu](https://github.com/lialosiu)
-- [Eric Pfeiffer (computerfr33k)](https://github.com/computerfr33k)
+- [Eric Pfeiffer](https://github.com/computerfr33k) (computerfr33k)
 - [Orette](https://github.com/orette)
-- [Jack Fletcher (Kauhat)](https://github.com/Kauhat)
-- [Bo-Yi Wu (appleboy)](https://github.com/appleboy)
-- [Amin Mkh (AminMkh)](https://github.com/AminMkh)
-- [Matthew Tonkin Dunn (mattythebatty)](https://github.com/mattythebatty)
-- [Zhivitsa Kirill (zhikiri)](https://github.com/zhikiri)
+- [Jack Fletcher](https://github.com/Kauhat) (Kauhat)
+- [Amin Mkh](https://github.com/AminMkh)
+- [Matthew Tonkin Dunn](https://github.com/mattythebatty) (mattythebatty)
+- [Zhivitsa Kirill](https://github.com/zhikiri) (zhikiri)
 - [Benmag](https://github.com/benmag)
 
-**Awesome People:**
+**Other Contributors & Supporters:**
 
 - [Contributors](https://github.com/LaraDock/laradock/graphs/contributors)
 - [Supporters](https://github.com/LaraDock/laradock/issues?utf8=%E2%9C%93&q=)
-
 
 ## License
 
