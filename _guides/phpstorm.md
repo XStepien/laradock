@@ -4,11 +4,14 @@ Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDoc
 
 - [Intro](#Intro)
 - [Installation](#Installation)
-    - [Customized laradock/docker-compose.yml](#CustomizeDockerCompose) 
+    - [Customize laradock/docker-compose.yml](#CustomizeDockerCompose) 
         - [Clean House](#InstallCleanHouse) 
         - [LaraDock Dial Tone](#InstallLaraDockDialTone) 
-        - [SSH into php-fpm](#InstallLaraDockSSH) 
+        - [hosts](#AddToHosts) 
+            - add laravel
+        - [SSH into php-fpm](#SSHintoWorkspace) 
             - [KiTTY](#InstallKiTTY) 
+        - [Enable xDebug on php-fpm](#enablePhpXdebug)
     - [PHPStorm](#InstallPHPStorm)
         - [Configs](#InstallPHPStormConfigs)
 - [Usage](#Usage)
@@ -31,19 +34,14 @@ This guide is based on Docker Native Windows.
     
     This guide was also written based on Docker for Windows Native. Adapt accordingly.
 
+
+<a name="AddToHosts"></a>
+## hosts
+- Add `laravel` to your hosts file. It should be set to the IP of your running container. Mine is: `10.0.75.2`
 #### [Hosts File Editor](https://github.com/scottlerch/HostsFileEditor)
 - Hosts File Editor makes it easy to change your hosts file as well as archive multiple versions for easy retrieval.
     - Set `laravel` to your docker host IP. See [Example](photos/SimpleHostsEditor/AddHost_dockerhost.png).
 
-
-<a name="CustomizeWorkspace"></a>
-#### Customize workspace
-The LaraDock workspace container is based on [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker).
-This image provides support out of the box for `SSH` although it is not enabled by default.
-
-#### Note regarding xdebug
-Although xdebug is installed, it is not switched on by default. This is so that tools like `composer` will not be slowed down.
-PHPStorm is configured to enable `xdebug` on-demand when running unit tests. See [PHPStorm Intepreters](https://github.com/LarryEitel/laravel-laradock-phpstorm/blob/master/screenshots/PHPStorm/Settings/LangsPHPInterpreters.png) example.
 
 ### Edit laradock/docker-compose.yml
 Set the following variables:
@@ -70,13 +68,9 @@ Set the following variables:
                 
 ```
 
-#### PHP-FPM Container
-- Set: INSTALL_XDEBUG=true
-    - Note: xdebug is installed but disabled until switched on. See: [Debug Web Site](#UsagePHPStormDebugSite)
 
-<!--TODO: update screenshot-->
-NOTE: PHP_IDE_CONFIG="serverName=[laravel](https://github.com/LaraDock/laradock/_guides/photos/PHPStorm/Settings/DeploymentConnection.png)" must point to a valid `Build, Execution, Deployment > Deployment > Name`.
-
+<a name="Intro"></a>
+## Intro
 
 - If your containers are currently running, let's give it a restart.
 `docker-compose up -d mysql nginx`
@@ -134,7 +128,7 @@ laradock_workspace_1        /sbin/my_init                 Up       0.0.0.0:22->2
 
 ```
 
-<a name="InstallLaraDockSSH"></a>
+<a name="SSHintoWorkspace"></a>
 #### Let's shell into workspace
 Assuming that you are in laradock folder.
 `ssh -i workspace/insecure_id_rsa root@laravel`
@@ -214,6 +208,23 @@ PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.
     - `hosts`
         Edit: `C:\Windows\System32\drivers\etc\hosts`.
         - ![WindowsFirewallAllowedApps.png](photos/PHPStorm/Settings/hosts.png)
+
+        - [Enable xDebug on php-fpm](#enablePhpXdebug)
+
+<a name="enablePhpXdebug"></a>
+#### Enable xDebug on php-fpm
+In a host terminal sitting in the laradock folder, run: `./xdebugPhpFpm start`
+You should see something like the following:
+```
+Start xDebug
+laradock_php-fpm_1
+PHP 7.0.9 (cli) (built: Aug 10 2016 19:45:48) ( NTS )
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies
+    with Xdebug v2.4.1, Copyright (c) 2002-2016, by Derick Rethans
+```
+At this point xdebug is enabled and listening for debug info on port 9000.
+
 
 
 <a name="Usage"></a>
