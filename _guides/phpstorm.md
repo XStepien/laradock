@@ -153,31 +153,35 @@ Assuming that you are in laradock folder.
     - ![ConnectionData](photos/KiTTY/ConnectionData.png)
     - ![ConnectionSSH](photos/KiTTY/ConnectionSSH.png)
     - ![ConnectionSSHAuth](photos/KiTTY/ConnectionSSHAuth.png)
+    - ![TerminalShell](photos/KiTTY/TerminalShell.png)
 
 
 <a name="InstallPHPStorm"></a>
 ### PHPStorm
 PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program). Which means it is free of charge if you don't mind an occasional bump in the road. It's been rock-solid for me.
 
-- File/New Project
-![New Project Dialog Box](photos/PHPStorm/NewProjectDialogBox.png)
-`dockerhost` was added to `etc/hosts` and points to `Docker Host IP`.
-
-
-    - ![Create From Existing Sources](photos/PHPStorm/NewProjectCreateFromExistingSources.png)
 
 
 <a name="InstallPHPStormConfigs"></a>
 #### Configs
 - Here are some settings that work:
+    - `Settings/BuildDeploymentConnection`
+        - ![Settings/BuildDeploymentConnection](photos/PHPStorm/Settings/BuildDeploymentConnection.png)
+    
     - `Settings/BuildDeploymentConnectionMappings`
         - ![Settings/BuildDeploymentConnectionMappings](photos/PHPStorm/Settings/BuildDeploymentConnectionMappings.png)
     
-    - `Settings/DeploymentConnection`
-        - ![Settings/DeploymentConnection](photos/PHPStorm/Settings/DeploymentConnection.png)
+    - `Settings/BuildDeploymentDebugger`
+        - ![Settings/BuildDeploymentDebugger](photos/PHPStorm/Settings/BuildDeploymentDebugger.png)
     
-    - `Settings/DeploymentMappings`
-        - ![Settings/DeploymentMappings](photos/PHPStorm/Settings/DeploymentMappings.png)
+    - `Settings/EditRunConfigurationRemoteWebDebug`
+        - ![Settings/EditRunConfigurationRemoteWebDebug](photos/PHPStorm/Settings/EditRunConfigurationRemoteWebDebug.png)
+    
+    - `Settings/EditRunConfigurationRemoteExampleTestDebug`
+        - ![Settings/EditRunConfigurationRemoteExampleTestDebug](photos/PHPStorm/Settings/EditRunConfigurationRemoteExampleTestDebug.png)
+    
+    - `Settings/LangsPHPDebug`
+        - ![Settings/LangsPHPDebug](photos/PHPStorm/Settings/LangsPHPDebug.png)
     
     - `Settings/LangsPHPInterpreters`
         - ![Settings/LangsPHPInterpreters](photos/PHPStorm/Settings/LangsPHPInterpreters.png)
@@ -185,15 +189,31 @@ PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.
     - `Settings/LangsPHPPHPUnit`
         - ![Settings/LangsPHPPHPUnit](photos/PHPStorm/Settings/LangsPHPPHPUnit.png)
     
-    - `Settings/EditRunConfigurations`
-        - ![Settings/EditRunConfigurations](photos/PHPStorm/Settings/EditRunConfigurations.png)
-    
     - `Settings/LangsPHPServers`
         - ![Settings/LangsPHPServers](photos/PHPStorm/Settings/LangsPHPServers.png)
     
     - `RemoteHost`
         To switch on this view, go to: `Menu/Tools/Deployment/Browse Remote Host`.
         - ![RemoteHost](photos/PHPStorm/RemoteHost.png)
+        
+    - `RemoteWebDebug`
+        - ![DebugRemoteOn](photos/PHPStorm/DebugRemoteOn.png)
+
+    - `EditRunConfigurationRemoteWebDebug`
+        Go to: `Menu/Run/Edit Configurations`.
+        - ![EditRunConfigurationRemoteWebDebug](photos/PHPStorm/Settings/EditRunConfigurationRemoteWebDebug.png)
+
+    - `EditRunConfigurationRemoteExampleTestDebug`
+        Go to: `Menu/Run/Edit Configurations`.
+        - ![EditRunConfigurationRemoteExampleTestDebug](photos/PHPStorm/Settings/EditRunConfigurationRemoteExampleTestDebug.png)
+
+    - `WindowsFirewallAllowedApps`
+        Go to: `Control Panel\All Control Panel Items\Windows Firewall\Allowed apps`.
+        - ![WindowsFirewallAllowedApps.png](photos/PHPStorm/Settings/WindowsFirewallAllowedApps.png)
+
+    - `hosts`
+        Edit: `C:\Windows\System32\drivers\etc\hosts`.
+        - ![WindowsFirewallAllowedApps.png](photos/PHPStorm/Settings/hosts.png)
 
 
 <a name="Usage"></a>
