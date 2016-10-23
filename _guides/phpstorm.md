@@ -1,4 +1,4 @@
-# PHPStorm Guide
+# PHPStorm Debugging Guide
 Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDock/laradock) [Laravel+Docker] and [PHPStorm](https://www.jetbrains.com/phpstorm/) to play nice together complete with remote xdebug'ing as icing on top!
 
 
@@ -8,7 +8,6 @@ Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDoc
         - [Clean House](#InstallCleanHouse) 
         - [LaraDock Dial Tone](#InstallLaraDockDialTone) 
         - [hosts](#AddToHosts) 
-            - add laravel
         - [SSH into php-fpm](#SSHintoWorkspace) 
             - [KiTTY](#InstallKiTTY) 
         - [Enable xDebug on php-fpm](#enablePhpXdebug)
@@ -38,8 +37,7 @@ This guide is based on Docker Native Windows.
 <a name="AddToHosts"></a>
 ## hosts
 - Add `laravel` to your hosts file. It should be set to the IP of your running container. Mine is: `10.0.75.2`
-#### [Hosts File Editor](https://github.com/scottlerch/HostsFileEditor)
-- Hosts File Editor makes it easy to change your hosts file as well as archive multiple versions for easy retrieval.
+- [Hosts File Editor](https://github.com/scottlerch/HostsFileEditor) makes it easy to change your hosts file.
     - Set `laravel` to your docker host IP. See [Example](photos/SimpleHostsEditor/AddHost_dockerhost.png).
 
 
@@ -69,11 +67,17 @@ Set the following variables:
 ```
 
 
-<a name="Intro"></a>
-## Intro
+### Edit xdebug.ini files
+- `laradock/workspace/xdebug.ini`
+- `laradock/php-fpm/xdebug.ini`
 
-- If your containers are currently running, let's give it a restart.
-`docker-compose up -d mysql nginx`
+Set the following variables:
+```
+xdebug.remote_autostart=1
+xdebug.remote_enable=1
+xdebug.remote_connect_back=1
+xdebug.cli_color=1
+```
 
 
 <a name="InstallCleanHouse"></a>
@@ -158,7 +162,7 @@ PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.
 
 <a name="InstallPHPStormConfigs"></a>
 #### Configs
-- Here are some settings that work:
+- Here are some settings that are know to work:
     - `Settings/BuildDeploymentConnection`
         - ![Settings/BuildDeploymentConnection](photos/PHPStorm/Settings/BuildDeploymentConnection.png)
     
@@ -256,7 +260,8 @@ At this point xdebug is enabled and listening for debug info on port 9000.
 `./xdebugPhpFpm stop`
     
 - Start Remote Debugging
-    - ![DebugRemoteOn](photos/PHPStorm/DebugRemoteOn.png) 
+    - ![DebugRemoteOn](photos/PHPStorm/DebugRemoteOn.png)
+    
 - Open to edit: `bootstrap/app.php`
 - Add a BreakPoint on line 14: `$app = new Illuminate\Foundation\Application(`
 - Reload [Laravel Site](http://laravel/)
