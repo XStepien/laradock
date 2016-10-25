@@ -127,7 +127,7 @@ laradock_nginx_1            nginx                         Up       0.0.0.0:443->
 laradock_php-fpm_1          php-fpm                       Up       9000/tcp
 laradock_volumes_data_1     true                          Exit 0
 laradock_volumes_source_1   true                          Exit 0
-laradock_workspace_1        /sbin/my_init                 Up       0.0.0.0:22->22/tcp
+laradock_workspace_1        /sbin/my_init                 Up       0.0.0.0:2222->22/tcp
 
 
 ```
