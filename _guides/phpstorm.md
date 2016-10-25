@@ -1,6 +1,4 @@
 # PHPStorm Debugging Guide
-Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDock/laradock) [Laravel+Docker] and [PHPStorm](https://www.jetbrains.com/phpstorm/) to play nice together complete with remote xdebug'ing as icing on top!
-
 
 - [Intro](#Intro)
 - [Installation](#Installation)
@@ -8,31 +6,29 @@ Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDoc
         - [Clean House](#InstallCleanHouse) 
         - [LaraDock Dial Tone](#InstallLaraDockDialTone) 
         - [hosts](#AddToHosts) 
-        - [SSH into php-fpm](#SSHintoWorkspace) 
-            - [KiTTY](#InstallKiTTY) 
         - [Enable xDebug on php-fpm](#enablePhpXdebug)
-    - [PHPStorm](#InstallPHPStorm)
+    - [PHPStorm Settings](#InstallPHPStorm)
         - [Configs](#InstallPHPStormConfigs)
 - [Usage](#Usage)
     - [Laravel](#UsageLaravel) 
         - [Run ExampleTest](#UsagePHPStormRunExampleTest) 
         - [Debug ExampleTest](#UsagePHPStormDebugExampleTest) 
         - [Debug Web Site](#UsagePHPStormDebugSite) 
-
+- [SSH into workspace](#SSHintoWorkspace) 
+    - [KiTTY](#InstallKiTTY) 
+    
 <a name="Intro"></a>
 ## Intro
 
-This guide is based on Docker Native Windows.
+Wiring up [Laravel](https://laravel.com/), [LaraDock](https://github.com/LaraDock/laradock) [Laravel+Docker] and [PHPStorm](https://www.jetbrains.com/phpstorm/) to play nice together complete with remote xdebug'ing as icing on top! Although this guide is based on `PHPStorm Windows`, 
+you should be able to adjust accordingly. This guide was written based on Docker for Windows Native.
 
 <a name="Installation"></a>
 ## Installation
 
 - This guide assumes the following:
-    - you have already installed Laravel, LaraDock and PHPStorm and are familiar with these. 
-    - you have installed Laravel at `/c/_dk/laravel`. Adjust your configurations accordingly.
-    
-    This guide was also written based on Docker for Windows Native. Adapt accordingly.
-
+    - you have already installed and are familiar with Laravel, LaraDock and PHPStorm. 
+    - you have installed Laravel as a parent of `laradock`. This guide assumes `/c/_dk/laravel`. 
 
 <a name="AddToHosts"></a>
 ## hosts
@@ -65,7 +61,6 @@ Set the following variables:
                 ...
                 
 ```
-
 
 ### Edit xdebug.ini files
 - `laradock/workspace/xdebug.ini`
@@ -109,6 +104,30 @@ Here are a few things I use to clean things up.
     }
     ```
 
+- If you frequently switch configurations for LaraDock, you may find that adding the following and added to your `.bashrc` or equivalent useful:
+```
+# remove laravel* containers
+# remove laravel_* images
+dcleanlaradockfunction()
+{
+	echo 'Removing ALL containers associated with laradock'
+	docker ps -a | awk '{ print $1,$2 }' | grep laradock | awk '{print $1}' | xargs -I {} docker rm {}
+
+	# remove ALL images associated with laradock_
+	# does NOT delete laradock/* which are hub images
+	echo 'Removing ALL images associated with laradock_'
+	docker images | awk '{print $1,$2,$3}' | grep laradock_ | awk '{print $3}' | xargs -I {} docker rmi {}
+
+	echo 'Listing all laradock docker hub images...'
+	docker images | grep laradock
+
+	echo 'dcleanlaradock completed'
+}
+# associate the above function with an alias
+# so can recall/lookup by typing 'alias'
+alias dcleanlaradock=dcleanlaradockfunction
+```
+
 <a name="InstallLaraDockDialTone"></a>
 #### Let's get a dial-tone with Laravel
 
@@ -132,37 +151,27 @@ laradock_workspace_1        /sbin/my_init                 Up       0.0.0.0:2222-
 
 ```
 
-<a name="SSHintoWorkspace"></a>
-#### Let's shell into workspace
-Assuming that you are in laradock folder.
-`ssh -i workspace/insecure_id_rsa root@laravel`
+<a name="enablePhpXdebug"></a>
+#### Enable xDebug on php-fpm
+In a host terminal sitting in the laradock folder, run: `./xdebugPhpFpm status`
+You should see something like the following:
+```
+xDebug status
+laradock_php-fpm_1
+PHP 7.0.9 (cli) (built: Aug 10 2016 19:45:48) ( NTS )
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies
+    with Xdebug v2.4.1, Copyright (c) 2002-2016, by Derick Rethans
+```
+Other commands include `./xdebugPhpFpm start | stop`.
 
-<a name="InstallKiTTY"></a>
-**Cha Ching!!!!**
-##### KiTTY
-[Kitty](http://www.9bis.net/kitty/) KiTTY is a fork from version 0.67 of PuTTY.
-
-- Here are some settings that are working for me:
-    - ![Session](photos/KiTTY/Session.png)
-    - ![Terminal](photos/KiTTY/Terminal.png)
-    - ![Window](photos/KiTTY/Window.png)
-    - ![WindowAppearance](photos/KiTTY/WindowAppearance.png)
-    - ![Connection](photos/KiTTY/Connection.png)
-    - ![ConnectionData](photos/KiTTY/ConnectionData.png)
-    - ![ConnectionSSH](photos/KiTTY/ConnectionSSH.png)
-    - ![ConnectionSSHAuth](photos/KiTTY/ConnectionSSHAuth.png)
-    - ![TerminalShell](photos/KiTTY/TerminalShell.png)
-
-
-<a name="InstallPHPStorm"></a>
-### PHPStorm
-PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program). Which means it is free of charge if you don't mind an occasional bump in the road. It's been rock-solid for me.
-
+If you have enabled `xdebug=true` in `docker-compose.yml/php-fpm`, `xdebug` will already be running when
+`php-fpm` is started and listening for debug info on port 9000.
 
 
 <a name="InstallPHPStormConfigs"></a>
-#### Configs
-- Here are some settings that are know to work:
+#### PHPStorm Settings
+- Here are some settings that are known to work:
     - `Settings/BuildDeploymentConnection`
         - ![Settings/BuildDeploymentConnection](photos/PHPStorm/Settings/BuildDeploymentConnection.png)
     
@@ -215,27 +224,11 @@ PHPStorm is available as an [Early Access Program](https://confluence.jetbrains.
 
         - [Enable xDebug on php-fpm](#enablePhpXdebug)
 
-<a name="enablePhpXdebug"></a>
-#### Enable xDebug on php-fpm
-In a host terminal sitting in the laradock folder, run: `./xdebugPhpFpm start`
-You should see something like the following:
-```
-Start xDebug
-laradock_php-fpm_1
-PHP 7.0.9 (cli) (built: Aug 10 2016 19:45:48) ( NTS )
-Copyright (c) 1997-2016 The PHP Group
-Zend Engine v3.0.0, Copyright (c) 1998-2016 Zend Technologies
-    with Xdebug v2.4.1, Copyright (c) 2002-2016, by Derick Rethans
-```
-At this point xdebug is enabled and listening for debug info on port 9000.
-
 
 
 <a name="Usage"></a>
 ## Usage
 
-<a name="UsagePHPStorm"></a>
-## PHPStorm
 <a name="UsagePHPStormRunExampleTest"></a>
 ### Run ExampleTest
 - right-click on `tests/ExampleTest.php`
@@ -267,3 +260,30 @@ At this point xdebug is enabled and listening for debug info on port 9000.
 - Reload [Laravel Site](http://laravel/)
     - Should have stopped at the BreakPoint!! You are now debugging locally against a remote Laravel project via SSH!
     - ![Remote Debugging Success](photos/PHPStorm/RemoteDebuggingSuccess.png)
+
+
+
+<a name="SSHintoWorkspace"></a>
+#### Let's shell into workspace
+Assuming that you are in laradock folder, type:
+`ssh -i workspace/insecure_id_rsa -p2222 root@laravel`
+**Cha Ching!!!!**
+
+
+<a name="InstallKiTTY"></a>
+
+##### KiTTY
+[Kitty](http://www.9bis.net/kitty/) KiTTY is a fork from version 0.67 of PuTTY.
+
+- Here are some settings that are working for me:
+    - ![Session](photos/KiTTY/Session.png)
+    - ![Terminal](photos/KiTTY/Terminal.png)
+    - ![Window](photos/KiTTY/Window.png)
+    - ![WindowAppearance](photos/KiTTY/WindowAppearance.png)
+    - ![Connection](photos/KiTTY/Connection.png)
+    - ![ConnectionData](photos/KiTTY/ConnectionData.png)
+    - ![ConnectionSSH](photos/KiTTY/ConnectionSSH.png)
+    - ![ConnectionSSHAuth](photos/KiTTY/ConnectionSSHAuth.png)
+    - ![TerminalShell](photos/KiTTY/TerminalShell.png)
+
+

@@ -99,7 +99,7 @@ COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
 #####################################
 # ssh:
 #####################################
-ARG INSTALL_WORKSPACE_SSH=true
+ARG INSTALL_WORKSPACE_SSH=false
 ENV INSTALL_WORKSPACE_SSH ${INSTALL_WORKSPACE_SSH}
 
 ADD insecure_id_rsa /tmp/id_rsa
