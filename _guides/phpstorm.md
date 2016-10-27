@@ -6,6 +6,7 @@
         - [Clean House](#InstallCleanHouse) 
         - [LaraDock Dial Tone](#InstallLaraDockDialTone) 
         - [hosts](#AddToHosts) 
+        - [Firewall](#FireWall) 
         - [Enable xDebug on php-fpm](#enablePhpXdebug)
     - [PHPStorm Settings](#InstallPHPStorm)
         - [Configs](#InstallPHPStormConfigs)
@@ -32,10 +33,20 @@ you should be able to adjust accordingly. This guide was written based on Docker
 
 <a name="AddToHosts"></a>
 ## hosts
-- Add `laravel` to your hosts file. It should be set to the IP of your running container. Mine is: `10.0.75.2`
+- Add `laravel` to your hosts file located on Windows 10 at `C:\Windows\System32\drivers\etc\hosts`. It should be set to the IP of your running container. Mine is: `10.0.75.2`
+On Windows you can find it by opening Windows `Hyper-V Manager`.
+    - ![Windows Hyper-V Manager](photos/PHPStorm/Settings/WindowsHyperVManager.png)
+        
 - [Hosts File Editor](https://github.com/scottlerch/HostsFileEditor) makes it easy to change your hosts file.
-    - Set `laravel` to your docker host IP. See [Example](photos/SimpleHostsEditor/AddHost_dockerhost.png).
+    - Set `laravel` to your docker host IP. See [Example](photos/SimpleHostsEditor/AddHost_laravel.png).
 
+
+<a name="FireWall"></a>
+## Firewall
+Your PHPStorm will need to be able to receive a connection from PHP xdebug either your running workspace or php-fpm containers on port 9000. This means that your Windows Firewall should either enable connections from the Application PHPStorm OR the port. 
+
+- It is important to note that if the Application PHPStorm is NOT enabled in the firewall, you will not be able to recreate a rule to override that.
+- Also be aware that if you are installing/upgrade different versions of PHPStorm, you MAY have orphaned references to PHPStorm in your Firewall! You may decide to remove orphaned references however in either case, make sure that they are set to receive public TCP traffic.
 
 ### Edit laradock/docker-compose.yml
 Set the following variables:
@@ -262,13 +273,15 @@ If you have enabled `xdebug=true` in `docker-compose.yml/php-fpm`, `xdebug` will
     - ![Remote Debugging Success](photos/PHPStorm/RemoteDebuggingSuccess.png)
 
 
-
 <a name="SSHintoWorkspace"></a>
 #### Let's shell into workspace
 Assuming that you are in laradock folder, type:
 `ssh -i workspace/insecure_id_rsa -p2222 root@laravel`
 **Cha Ching!!!!**
-
+- `workspace/insecure_id_rsa.ppk` may become corrupted. In which case:
+    - fire up `puttygen`
+    - import `workspace/insecure_id_rsa`
+    - save private key to `workspace/insecure_id_rsa.ppk`
 
 <a name="InstallKiTTY"></a>
 
