@@ -788,6 +788,19 @@ docker-compose up -d elasticsearch
 
 2 - Open your browser and visit the localhost on port **9200**:  `http://localhost:9200`
 
+### Install ElasticSearch Plugin
+
+1 - Install the ElasticSearch plugin like [delete-by-query](https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugins-delete-by-query.html).
+
+```bash
+docker exec {container-name} /usr/share/elasticsearch/bin/plugin install delete-by-query
+```
+
+2 - Restart elasticsearch container
+
+```bash
+docker restart {container-name}
+```
 
 <br>
 <a name="PHP"></a>
@@ -939,7 +952,7 @@ For information on how to configure xDebug with your IDE and work it out, check 
 
 By installing xDebug, you are enabling it to run on startup by default.
 
-To controll the behavior of xDebug (in the `php-fpm` Container), you can run the following commands from the LaraDock root folder:
+To controll the behavior of xDebug (in the `php-fpm` Container), you can run the following commands from the LaraDock root folder, (at the same prompt where you run docker-compose):
 
 - Stop xDebug from running by default: `./xdebugPhpFpm stop`.
 - Start xDebug by default: `./xdebugPhpFpm start`.
